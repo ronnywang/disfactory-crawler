@@ -19,6 +19,10 @@ $bbox = array(
     25 + 18/60 + 20/3600, // 北
 );
 
+if (!file_exists('tiles')) {
+    mkdir('tiles');
+}
+
 $zoom = 15;
 $tile_ws = (latlngtopoint($bbox[2], $bbox[0], $zoom));
 $tile_en = (latlngtopoint($bbox[3], $bbox[1], $zoom));
