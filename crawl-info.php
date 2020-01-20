@@ -60,7 +60,7 @@ $get_land_info = function($city, $sect, $landno) use (&$fetch_time){
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $content = curl_exec($curl);
         if (!$obj = json_decode($content) or !property_exists($obj, 'ralid')) {
-            var_dump($content);
+            //var_dump($content);
             throw new Exception("get_land_info {$city} {$sect} {$landno} 失敗");
         }
         curl_close($curl);
