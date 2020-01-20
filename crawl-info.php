@@ -1,5 +1,9 @@
 <?php
 $fetch_time = null;
+if (!file_exists('cache')) {
+    mkdir('cache');
+}
+
 $get_location = function($x, $y) use (&$fetch_time) {
     $target = "cache/location-{$x}-{$y}";
     if (!file_exists($target)) {
