@@ -26,7 +26,7 @@ $get_location = function($x, $y) use (&$fetch_time) {
     }
     return file_get_contents($target);
 };
-$tile_map_index = function($x, $y, $city) use (&$fetch_time){
+$tile_map_index = function($x, $y, $city, $retry = 0) use (&$fetch_time, $tile_map_index){
     $target = "cache/land-{$x}-{$y}-{$city}";
     if (!file_exists($target)) {
         while (!is_null($fetch_time) and microtime(true) - $fetch_time < 1) { usleep(100); };
@@ -41,6 +41,12 @@ $tile_map_index = function($x, $y, $city) use (&$fetch_time){
         if (!$obj = json_decode($content) or !is_array($obj) or !$obj or !$obj[0]->landno) {
             if ($obj[0]->msg == '地號查詢無資料!') {
             } else {
+                if ($retry < 3) {
+                    sleep(1);
+                    error_log("retry {$retry}");
+                    return $tile_map_index($x, $y, $city, $retry + 1);
+                }
+
                 var_dump($content);
                 throw new Exception("{$x},{$y},{$city} 失敗");
             }
